@@ -50,11 +50,11 @@ namespace DefaultNamespace
             if (Game.Save.HeldItemIndex == SaveIndex)
             {
                 SetHeld(false);
-                Game.Save.HeldItemIndex = SaveBlock.NoHeldItem;
+                Game.Save.HeldItemIndex = OverworldSaveData.NoHeldItem;
                 return;
             }
             
-            if (Game.Save.HeldItemIndex != SaveBlock.NoHeldItem)
+            if (Game.Save.HeldItemIndex != OverworldSaveData.NoHeldItem)
                 Game.ItemSystem.FindItem(Game.Save.HeldItemIndex).SetHeld(false);
             
             Game.Save.HeldItemIndex = SaveIndex;

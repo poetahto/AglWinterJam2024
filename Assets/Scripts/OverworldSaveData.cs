@@ -1,9 +1,9 @@
 ﻿using DefaultNamespace;
 using UnityEngine;
-using Quaternion = System.Numerics.Quaternion;
 
-public class SaveBlock
+public class OverworldSaveData
 {
+    // todo: idk dont rlly like constants here
     public const int MaxItems = 100;
     public const int MaxPreSpawnedItems = 100;
     public const int NoHeldItem = -1;

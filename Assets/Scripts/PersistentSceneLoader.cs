@@ -1,4 +1,5 @@
-﻿using Cysharp.Threading.Tasks;
+﻿using System.Linq;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -20,11 +21,24 @@ namespace Ltg8
 
             // Wait one frame so entrypoint can initialize itself
             await UniTask.Yield();
-            Game.Save = await Game.Serializer.ReadFromDisk("dev_test");
+            GameInitializer initializer = Object.FindAnyObjectByType<GameInitializer>();
+            await initializer.Initialize();
 
-            await SceneManager.LoadSceneAsync(currentSceneName, LoadSceneMode.Additive);
-            SceneManager.SetActiveScene(SceneManager.GetSceneByName(currentSceneName));
-            Game.ItemSystem.SpawnSavedItems();
+#if UNITY_EDITOR
+            if (Game.Settings.overworldSceneNames.Contains(currentSceneName))
+            {
+                // do stuff like spawning items, player, ect.
+                await Game.Overworld.LoadLevel(currentSceneName);
+            }
+            else
+            {
+                // vanilla unity scene loading
+                await SceneManager.LoadSceneAsync(currentSceneName, LoadSceneMode.Additive);
+                SceneManager.SetActiveScene(SceneManager.GetSceneByName(currentSceneName));
+            }
+#else
+            await SceneManager.LoadSceneAsync(1, LoadSceneMode.Additive);
+#endif
         }
     }
 }

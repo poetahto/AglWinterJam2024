@@ -12,7 +12,7 @@ namespace DefaultNamespace
 
         public void SpawnSavedItems()
         {
-            for (int i = 0; i < SaveBlock.MaxItems; i++)
+            for (int i = 0; i < OverworldSaveData.MaxItems; i++)
             {
                 if (Game.Save.Items[i].Type != ItemType.Invalid && !_spawnedItemViews.ContainsKey(i))
                     CreateItemAtIndex(i, Game.Save.Items[i]);
@@ -46,7 +46,7 @@ namespace DefaultNamespace
             // Find a unused index to store this item in our save.
             int saveIndex = -1;
             
-            for (int i = 0; i < SaveBlock.MaxItems; ++i)
+            for (int i = 0; i < OverworldSaveData.MaxItems; ++i)
             {
                 if (Game.Save.Items[i].Type == ItemType.Invalid)
                 {

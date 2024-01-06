@@ -7,7 +7,7 @@ namespace DefaultNamespace
         
         private void Update()
         {
-            if (Game.Save.HasHeldItemTarget && Game.Save.HeldItemIndex != SaveBlock.NoHeldItem)
+            if (Game.Save.HasHeldItemTarget && Game.Save.HeldItemIndex != OverworldSaveData.NoHeldItem)
             {
                 OverworldItemView itemView = Game.ItemSystem.FindItem(Game.Save.HeldItemIndex);
                 itemView.Body.velocity = (Game.Save.HeldItemTarget - itemView.transform.position) * heldItemSpeed;
