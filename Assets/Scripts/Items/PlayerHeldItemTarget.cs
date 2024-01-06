@@ -5,17 +5,17 @@ namespace DefaultNamespace
     {
         private void OnEnable()
         {
-            Game.SaveBlock.HasHeldItemTarget = true;
+            Game.Save.HasHeldItemTarget = true;
         }
 
         private void OnDisable()
         {
-            Game.SaveBlock.HasHeldItemTarget = false;
+            Game.Save.HasHeldItemTarget = false;
         }
 
         private void Update()
         {
-            Game.SaveBlock.HeldItemTarget = transform.position;
+            Game.Save.HeldItemTarget = transform.position;
         }
     }
 }

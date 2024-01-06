@@ -20,9 +20,11 @@ namespace Ltg8
 
             // Wait one frame so entrypoint can initialize itself
             await UniTask.Yield();
+            Game.Save = await Game.Serializer.ReadFromDisk("dev_test");
 
             await SceneManager.LoadSceneAsync(currentSceneName, LoadSceneMode.Additive);
             SceneManager.SetActiveScene(SceneManager.GetSceneByName(currentSceneName));
+            Game.ItemSystem.SpawnSavedItems();
         }
     }
 }

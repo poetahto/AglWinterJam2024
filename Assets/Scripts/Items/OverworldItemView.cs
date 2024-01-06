@@ -26,15 +26,15 @@ namespace DefaultNamespace
         {
             SaveIndex = saveIndex;
 
-            if (Game.SaveBlock.HeldItemIndex == SaveIndex)
+            if (Game.Save.HeldItemIndex == SaveIndex)
                 SetHeld(true);
         }
 
         private void Update()
         {
             Transform t = transform;
-            Game.SaveBlock.Items[SaveIndex].Position = t.position;
-            Game.SaveBlock.Items[SaveIndex].Rotation = t.rotation;
+            Game.Save.Items[SaveIndex].Position = t.position;
+            Game.Save.Items[SaveIndex].Rotation = t.rotation;
         }
 
         public void SetHeld(bool isHeld)
@@ -47,17 +47,17 @@ namespace DefaultNamespace
             base.Interact();
             RuntimeManager.PlayOneShot(interactSound);
 
-            if (Game.SaveBlock.HeldItemIndex == SaveIndex)
+            if (Game.Save.HeldItemIndex == SaveIndex)
             {
                 SetHeld(false);
-                Game.SaveBlock.HeldItemIndex = SaveBlock.NoHeldItem;
+                Game.Save.HeldItemIndex = SaveBlock.NoHeldItem;
                 return;
             }
             
-            if (Game.SaveBlock.HeldItemIndex != SaveBlock.NoHeldItem)
-                Game.ItemSystem.FindItem(Game.SaveBlock.HeldItemIndex).SetHeld(false);
+            if (Game.Save.HeldItemIndex != SaveBlock.NoHeldItem)
+                Game.ItemSystem.FindItem(Game.Save.HeldItemIndex).SetHeld(false);
             
-            Game.SaveBlock.HeldItemIndex = SaveIndex;
+            Game.Save.HeldItemIndex = SaveIndex;
             SetHeld(true);
         }
 

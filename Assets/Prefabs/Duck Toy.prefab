@@ -78,7 +78,7 @@ MonoBehaviour:
   onInteract:
     m_PersistentCalls:
       m_Calls: []
-  itemType: 0
+  itemType: 1
   interactSound:
     Guid:
       Data1: 1892812286

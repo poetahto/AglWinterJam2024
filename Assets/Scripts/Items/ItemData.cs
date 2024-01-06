@@ -1,6 +1,9 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
+
 namespace DefaultNamespace
 {
+    [Serializable]
     public struct ItemData
     {
         public ItemType Type;

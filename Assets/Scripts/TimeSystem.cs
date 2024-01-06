@@ -5,10 +5,11 @@ using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using FMOD.Studio;
 using FMODUnity;
+using poetools.Console.Commands;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class TimeSystem : MonoBehaviour
+public class TimeSystem : MonoBehaviour, IConsoleDebugInfo
 {
     private static readonly int SkyTint = Shader.PropertyToID("_SkyTint");
     private static readonly int AtmosphereThickness = Shader.PropertyToID("_AtmosphereThickness");
@@ -42,15 +43,15 @@ public class TimeSystem : MonoBehaviour
 
     public void ResetTime()
     {
-        Game.SaveBlock.Time = Time.Morning;
+        Game.Save.Time = Time.Morning;
         ApplyCurrentTimeSettings();
     }
 
     public void AdvanceTime()
     {
-        Time time = Game.SaveBlock.Time;
+        Time time = Game.Save.Time;
 
-        Game.SaveBlock.Time = time switch {
+        Game.Save.Time = time switch {
             Time.Morning => Time.Noon,
             Time.Noon => Time.Evening,
             Time.Evening => Time.Night,
@@ -64,7 +65,7 @@ public class TimeSystem : MonoBehaviour
         // pretty much, find the relevant settings and start animating them
         foreach (TimeSetting timeSetting in timeSettings)
         {
-            if (timeSetting.time == Game.SaveBlock.Time && timeSetting.time != _currentSetting.time)
+            if (timeSetting.time == Game.Save.Time && timeSetting.time != _currentSetting.time)
             {
                 _animationCts?.Cancel();
                 _animationCts = new CancellationTokenSource();
@@ -113,7 +114,9 @@ public class TimeSystem : MonoBehaviour
         }
     }
     
-    private void OnGUI()
+    public string DebugName => "time";
+    
+    public void DrawDebugInfo()
     {
         if (GUILayout.Button("Advance Time"))
             AdvanceTime();
@@ -121,7 +124,7 @@ public class TimeSystem : MonoBehaviour
         if (GUILayout.Button("Reset Time"))
             ResetTime();
         
-        GUILayout.Label(Game.SaveBlock.Time.ToString());
+        GUILayout.Label(Game.Save.Time.ToString());
         GUILayout.Label(_currentSetting.time.ToString());
         GUILayout.Label(_currentSetting.sunAngle.ToString(CultureInfo.InvariantCulture));
     }

@@ -7,10 +7,10 @@ namespace DefaultNamespace
         
         private void Update()
         {
-            if (Game.SaveBlock.HasHeldItemTarget && Game.SaveBlock.HeldItemIndex != SaveBlock.NoHeldItem)
+            if (Game.Save.HasHeldItemTarget && Game.Save.HeldItemIndex != SaveBlock.NoHeldItem)
             {
-                OverworldItemView itemView = Game.ItemSystem.FindItem(Game.SaveBlock.HeldItemIndex);
-                itemView.Body.velocity = (Game.SaveBlock.HeldItemTarget - itemView.transform.position) * heldItemSpeed;
+                OverworldItemView itemView = Game.ItemSystem.FindItem(Game.Save.HeldItemIndex);
+                itemView.Body.velocity = (Game.Save.HeldItemTarget - itemView.transform.position) * heldItemSpeed;
             }
         }
     }

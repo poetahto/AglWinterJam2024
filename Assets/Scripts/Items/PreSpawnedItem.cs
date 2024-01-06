@@ -11,15 +11,18 @@ namespace DefaultNamespace
         {
             OverworldItemView itemView = GetComponent<OverworldItemView>();
 
-            if (Game.SaveBlock.PreSpawnedItems.All(s => s != itemNameId))
+            if (Game.Save.PreSpawnedItems.All(s => s != itemNameId))
             {
                 Game.ItemSystem.SpawnItem(itemView.GetItemData());
 
                 // save our name in the pre-spawned items list so we dont get spawned again.
-                for (int i = 0; i < Game.SaveBlock.PreSpawnedItems.Length; i++)
+                for (int i = 0; i < Game.Save.PreSpawnedItems.Length; i++)
                 {
-                    if (Game.SaveBlock.PreSpawnedItems[i] == string.Empty)
-                        Game.SaveBlock.PreSpawnedItems[i] = itemNameId;
+                    if (Game.Save.PreSpawnedItems[i] == null)
+                    {
+                        Game.Save.PreSpawnedItems[i] = itemNameId;
+                        break;
+                    }
                 }
             }
             
