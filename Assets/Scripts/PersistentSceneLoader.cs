@@ -28,7 +28,7 @@ namespace Ltg8
             if (Game.Settings.overworldSceneNames.Contains(currentSceneName))
             {
                 // do stuff like spawning items, player, ect.
-                await Game.Overworld.LoadLevel(currentSceneName);
+                await Game.Overworld.LoadScene(currentSceneName);
             }
             else
             {

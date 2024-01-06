@@ -5,4 +5,5 @@ using UnityEngine;
 public class GameSettings : ScriptableObject
 {
     public List<string> overworldSceneNames;
+    public GameObject playerPrefab;
 }

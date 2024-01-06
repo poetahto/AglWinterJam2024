@@ -11,10 +11,10 @@ public class OverworldSaveData
     public bool HasHeldItemTarget;
     public Vector3 HeldItemTarget;
     public int HeldItemIndex = NoHeldItem;
-
     public ItemData[] Items = new ItemData[MaxItems];
     public string[] PreSpawnedItems = new string[MaxPreSpawnedItems];
     public Time Time;
     public Vector3 PlayerPosition;
-    public Quaternion PlayerRotation;
+    public Vector3 PlayerRotation;
+    public string PlayerScene;
 }
