@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using Cysharp.Threading.Tasks;
+using poetools.Console;
 using poetools.Console.Commands;
 using UnityEditor.Rendering;
 using UnityEngine;
@@ -51,6 +52,12 @@ public class SaveSerializer : MonoBehaviour, IConsoleDebugInfo
         
         Busy = false;
         return result;
+    }
+
+    [ConsoleCommand("save")]
+    public static void ConsoleSave()
+    {
+        Game.Serializer.WriteSaveData().Forget();
     }
 
     public string DebugName => "serializer";
