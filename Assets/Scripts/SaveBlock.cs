@@ -1,5 +1,6 @@
 ﻿using DefaultNamespace;
 using UnityEngine;
+using Quaternion = System.Numerics.Quaternion;
 
 public class SaveBlock
 {
@@ -14,4 +15,6 @@ public class SaveBlock
     public ItemData[] Items = new ItemData[MaxItems];
     public string[] PreSpawnedItems = new string[MaxPreSpawnedItems];
     public Time Time;
+    public Vector3 PlayerPosition;
+    public Quaternion PlayerRotation;
 }

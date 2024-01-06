@@ -32,8 +32,10 @@ public class TimeSystem : MonoBehaviour, IConsoleDebugInfo
 
     private void Start()
     {
-        _currentSetting.time = Time.Invalid;
-        ApplyCurrentTimeSettings();
+        _currentSetting = GetSetting(Game.Save.Time);
+        _currentInstance = RuntimeManager.CreateInstance(_currentSetting.ambienceOptions[Random.Range(0, _currentSetting.ambienceOptions.Length)]);
+        _currentInstance.start();
+        LerpSettings(default, _currentSetting, 1);
     }
 
     private void OnDestroy()
@@ -62,17 +64,24 @@ public class TimeSystem : MonoBehaviour, IConsoleDebugInfo
 
     private void ApplyCurrentTimeSettings()
     {
-        // pretty much, find the relevant settings and start animating them
-        foreach (TimeSetting timeSetting in timeSettings)
+        if (Game.Save.Time == _currentSetting.time)
+            return;
+
+        TimeSetting setting = GetSetting(Game.Save.Time);
+        _animationCts?.Cancel();
+        _animationCts = new CancellationTokenSource();
+        PlayTransition(_currentSetting, setting, _animationCts.Token).Forget();
+    }
+
+    private TimeSetting GetSetting(Time time)
+    {
+        foreach (TimeSetting setting in timeSettings)
         {
-            if (timeSetting.time == Game.Save.Time && timeSetting.time != _currentSetting.time)
-            {
-                _animationCts?.Cancel();
-                _animationCts = new CancellationTokenSource();
-                PlayTransition(_currentSetting, timeSetting, _animationCts.Token).Forget();
-                break;
-            }
+            if (setting.time == time)
+                return setting;
         }
+
+        throw new Exception("Tried to get time setting that hasn't been defined!");
     }
     
     private async UniTask PlayTransition(TimeSetting previous, TimeSetting current, CancellationToken token = default)
@@ -93,25 +102,32 @@ public class TimeSystem : MonoBehaviour, IConsoleDebugInfo
             elapsed += UnityEngine.Time.deltaTime;
             float t = elapsed / transitionDuration;
             
-            // Update sun
-            float curSunAngle = Mathf.Lerp(previous.sunAngle, current.sunAngle, t);
-            sun.transform.rotation = Quaternion.Euler(new Vector3(curSunAngle, 0, 0));
-            
-            // Update graphics
-            RenderSettings.ambientLight = Color.Lerp(previous.ambientColor, current.ambientColor, t);
-            RenderSettings.fogDensity = Mathf.Lerp(previous.fogDensity, current.fogDensity, t);
-            RenderSettings.fogColor = Color.Lerp(previous.fogColor, current.fogColor, t);
-            
-            // Update sky
-            skyMaterial.SetFloat(AtmosphereThickness, Mathf.Lerp(previous.skyThickness, current.skyThickness, t));
-            skyMaterial.SetColor(SkyTint, Color.Lerp(previous.skyColor, current.skyColor, t));
-            
-            // Update audio
+            LerpSettings(previous, current, t);
             oldInstance.setVolume(Mathf.Lerp(1, 0, t));
             newInstance.setVolume(Mathf.Lerp(0, 1, t));
             
             await Task.Yield();
         }
+        
+        LerpSettings(previous, current, 1);
+        oldInstance.setVolume(Mathf.Lerp(1, 0, 1));
+        newInstance.setVolume(Mathf.Lerp(0, 1, 1));
+    }
+
+    private void LerpSettings(TimeSetting from, TimeSetting to, float t)
+    {
+        // Update sun
+        float curSunAngle = Mathf.Lerp(from.sunAngle, to.sunAngle, t);
+        sun.transform.rotation = Quaternion.Euler(new Vector3(curSunAngle, 0, 0));
+            
+        // Update graphics
+        RenderSettings.ambientLight = Color.Lerp(from.ambientColor, to.ambientColor, t);
+        RenderSettings.fogDensity = Mathf.Lerp(from.fogDensity, to.fogDensity, t);
+        RenderSettings.fogColor = Color.Lerp(from.fogColor, to.fogColor, t);
+            
+        // Update sky
+        skyMaterial.SetFloat(AtmosphereThickness, Mathf.Lerp(from.skyThickness, to.skyThickness, t));
+        skyMaterial.SetColor(SkyTint, Color.Lerp(from.skyColor, to.skyColor, t));
     }
     
     public string DebugName => "time";
@@ -152,7 +168,6 @@ public class TimeSystem : MonoBehaviour, IConsoleDebugInfo
 
 public enum Time
 {
-    Invalid = -1,
     Morning,
     Noon,
     Evening,
