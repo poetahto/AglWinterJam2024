@@ -33,8 +33,8 @@ namespace DefaultNamespace
         private void Update()
         {
             Transform t = transform;
-            Game.Save.Items[SaveIndex].Position = t.position;
-            Game.Save.Items[SaveIndex].Rotation = t.rotation;
+            Game.Save.Items[SaveIndex].position = t.position;
+            Game.Save.Items[SaveIndex].rotation = t.rotation;
         }
 
         public void SetHeld(bool isHeld)
@@ -66,9 +66,9 @@ namespace DefaultNamespace
             Transform t = transform;
             
             return new ItemData {
-                Position = t.position,
-                Rotation = t.rotation,
-                Type = itemType,
+                position = t.position,
+                rotation = t.rotation,
+                type = itemType,
             };
         }
     }

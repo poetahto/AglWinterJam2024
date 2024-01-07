@@ -12,5 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81aeb7db59924225a2aa223faac81a36, type: 3}
   m_Name: Game Settings
   m_EditorClassIdentifier: Assembly-CSharp::GameSettings
+  npcViewPrefabs:
+  - {fileID: 5654375656054511538, guid: b9767e21234ed6c41a24a8e976a2f76c, type: 3}
   overworldSceneNames:
   - DanielTest
+  playerPrefab: {fileID: 0}

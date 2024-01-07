@@ -12,11 +12,16 @@ namespace DefaultNamespace
 
         public void SpawnSavedItems()
         {
-            for (int i = 0; i < OverworldSaveData.MaxItems; i++)
+            for (int i = 0; i < Game.Save.Items.Length; i++)
             {
-                if (Game.Save.Items[i].Type != ItemType.Invalid && !_spawnedItemViews.ContainsKey(i))
+                if (Game.Save.Items[i].type != ItemType.Invalid && !_spawnedItemViews.ContainsKey(i))
                     CreateItemAtIndex(i, Game.Save.Items[i]);
             }
+        }
+
+        public bool ItemIsSpawned(int saveIndex)
+        {
+            return _spawnedItemViews.ContainsKey(saveIndex);
         }
 
         public OverworldItemView FindItem(int saveIndex)
@@ -28,17 +33,17 @@ namespace DefaultNamespace
         {
             foreach (OverworldItemView itemView in itemViewPrefabs)
             {
-                if (itemView.itemType == data.Type)
+                if (itemView.itemType == data.type)
                 {
-                    OverworldItemView result = Instantiate(itemView, data.Position, data.Rotation);
+                    OverworldItemView result = Instantiate(itemView, data.position, data.rotation);
                     result.Initialize(index);
-                    Game.Save.Items[index].Type = data.Type;
+                    Game.Save.Items[index].type = data.type;
                     _spawnedItemViews.Add(index, result);
                     return result;
                 }
             }
 
-            throw new Exception($"Tried to spawn an item that we don't have a prefab for yet! {data.Type.ToString()}");
+            throw new Exception($"Tried to spawn an item that we don't have a prefab for yet! {data.type.ToString()}");
         }
 
         public OverworldItemView SpawnItem(ItemData data)
@@ -46,9 +51,9 @@ namespace DefaultNamespace
             // Find a unused index to store this item in our save.
             int saveIndex = -1;
             
-            for (int i = 0; i < OverworldSaveData.MaxItems; ++i)
+            for (int i = 0; i < Game.Save.Items.Length; ++i)
             {
-                if (Game.Save.Items[i].Type == ItemType.Invalid)
+                if (Game.Save.Items[i].type == ItemType.Invalid)
                 {
                     saveIndex = i;
                     break;
@@ -63,7 +68,7 @@ namespace DefaultNamespace
 
         public void DestroyItem(OverworldItemView itemView)
         {
-            Game.Save.Items[itemView.SaveIndex].Type = ItemType.Invalid;
+            Game.Save.Items[itemView.SaveIndex].type = ItemType.Invalid;
             _spawnedItemViews.Remove(itemView.SaveIndex);
             Destroy(itemView.gameObject);
         }

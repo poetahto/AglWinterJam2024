@@ -3,8 +3,6 @@
 
 using UnityEngine;
 
-namespace HoloToolkit.Unity
-{
     public enum PivotAxis
     {
         // Rotate about all axes.
@@ -76,4 +74,3 @@ namespace HoloToolkit.Unity
             transform.rotation = Quaternion.LookRotation(forward, up);
         }
     }
-}
