@@ -1,10 +1,8 @@
 ﻿using System.IO;
 using Cysharp.Threading.Tasks;
+using poetools.Console;
 using poetools.Console.Commands;
-using Unity.Collections;
-using Unity.Collections.LowLevel.Unsafe;
-using Unity.Collections.LowLevel.Unsafe.NotBurstCompatible;
-using Unity.Serialization.Binary;
+using UnityEditor.Rendering;
 using UnityEngine;
 
 public class SaveSerializer : MonoBehaviour, IConsoleDebugInfo
@@ -12,41 +10,54 @@ public class SaveSerializer : MonoBehaviour, IConsoleDebugInfo
     public static string SavePath => $"{Application.persistentDataPath}/saves";
     public bool Busy { get; private set; }
     
-    public async UniTask WriteToDisk(string saveId, SaveBlock data)
+    public async UniTask WriteToDisk<T>(string fileId, T data)
     {
-        if (Busy) return;
+        if (Busy)
+        {
+            Debug.LogError("Tried to write to the disk while serializer is busy!");
+            return;
+        }
         Busy = true;
 
-        string path = $"{SavePath}/{saveId}.json";
+        string path = $"{SavePath}/{fileId}.json";
         string dirName = Path.GetDirectoryName(path);
         
         if (!Directory.Exists(dirName) && dirName != null)
             Directory.CreateDirectory(dirName);
 
-        string json = JsonUtility.ToJson(Game.Save, true);
+        string json = JsonUtility.ToJson(data, true);
         await File.WriteAllTextAsync(path, json);
         
         await UniTask.Yield();
         Busy = false;
     }
 
-    public async UniTask<SaveBlock> ReadFromDisk(string saveId)
+    public async UniTask<T> ReadFromDisk<T>(string fileId, T defaultValue)
     {
-        if (Busy) return null;
+        if (Busy)
+        {
+            Debug.LogError("Tried to read to the disk while serializer is busy!");
+            return default;
+        }
 
-        string path = $"{SavePath}/{saveId}.json";
+        string path = $"{SavePath}/{fileId}.json";
 
-        // not sure if this is best approach for unavailable saves, but its good for now
         if (!File.Exists(path))
-            return new SaveBlock();
+            return defaultValue;
             
         Busy = true;
 
         string json = await File.ReadAllTextAsync(path);
-        SaveBlock result = JsonUtility.FromJson<SaveBlock>(json);
+        T result = JsonUtility.FromJson<T>(json);
         
         Busy = false;
         return result;
+    }
+
+    [ConsoleCommand("save")]
+    public static void ConsoleSave()
+    {
+        Game.Serializer.WriteSaveData().Forget();
     }
 
     public string DebugName => "serializer";
@@ -60,12 +71,10 @@ public class SaveSerializer : MonoBehaviour, IConsoleDebugInfo
         GUI.enabled = !Busy;
 
         if (GUILayout.Button("Save To Disk"))
-        {
-            WriteToDisk(_currentDebugSaveId, Game.Save).Forget();
-        }
-        
+            WriteSaveData().Forget();
+
         if (GUILayout.Button("Load From Disk"))
-            Game.Save = ReadFromDisk(_currentDebugSaveId).GetAwaiter().GetResult();
+            ReadSaveData().Forget();
 
         GUI.enabled = true;
 
@@ -73,5 +82,17 @@ public class SaveSerializer : MonoBehaviour, IConsoleDebugInfo
         if (GUILayout.Button("Open Save Folder"))
             UnityEditor.EditorUtility.RevealInFinder(SavePath);
 #endif
+    }
+    
+    private async UniTaskVoid WriteSaveData()
+    {
+        await WriteToDisk(_currentDebugSaveId, Game.Save);
+        await WriteToDisk("persistent_save", Game.PersistentSave);
+    }
+
+    private async UniTaskVoid ReadSaveData()
+    {
+        Game.Save = await ReadFromDisk(_currentDebugSaveId, new OverworldSaveData());
+        Game.PersistentSave = await ReadFromDisk("persistent_save", new PersistentSaveData());
     }
 }

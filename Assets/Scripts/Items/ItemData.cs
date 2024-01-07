@@ -6,8 +6,8 @@ namespace DefaultNamespace
     [Serializable]
     public struct ItemData
     {
-        public ItemType Type;
-        public Vector3 Position;
-        public Quaternion Rotation;
+        public ItemType type;
+        public Vector3 position;
+        public Quaternion rotation;
     }
 }

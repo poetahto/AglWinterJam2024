@@ -7,9 +7,10 @@ using FMOD.Studio;
 using FMODUnity;
 using poetools.Console.Commands;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
-public class TimeSystem : MonoBehaviour, IConsoleDebugInfo
+public class DayNightSystem : MonoBehaviour, IConsoleDebugInfo
 {
     private static readonly int SkyTint = Shader.PropertyToID("_SkyTint");
     private static readonly int AtmosphereThickness = Shader.PropertyToID("_AtmosphereThickness");
@@ -24,15 +25,19 @@ public class TimeSystem : MonoBehaviour, IConsoleDebugInfo
     private float transitionDuration = 10;
 
     [SerializeField] 
+    private float advanceTime = 5;
+
+    [SerializeField] 
     private Material skyMaterial;
 
     private TimeSetting _currentSetting;
     private EventInstance _currentInstance;
     private CancellationTokenSource _animationCts;
+    private float _elapsedTime;
 
     private void Start()
     {
-        _currentSetting = GetSetting(Game.Save.Time);
+        _currentSetting = GetSetting(Game.Save.TimeOfDay);
         _currentInstance = RuntimeManager.CreateInstance(_currentSetting.ambienceOptions[Random.Range(0, _currentSetting.ambienceOptions.Length)]);
         _currentInstance.start();
         LerpSettings(default, _currentSetting, 1);
@@ -43,41 +48,52 @@ public class TimeSystem : MonoBehaviour, IConsoleDebugInfo
         _animationCts?.Cancel();
     }
 
+    private void Update()
+    {
+        _elapsedTime += Time.deltaTime;
+
+        if (_elapsedTime >= advanceTime + transitionDuration)
+        {
+            _elapsedTime = 0;
+            AdvanceTime();
+        }
+    }
+
     public void ResetTime()
     {
-        Game.Save.Time = Time.Morning;
+        Game.Save.TimeOfDay = TimeOfDay.Morning;
         ApplyCurrentTimeSettings();
     }
 
     public void AdvanceTime()
     {
-        Time time = Game.Save.Time;
+        TimeOfDay timeOfDay = Game.Save.TimeOfDay;
 
-        Game.Save.Time = time switch {
-            Time.Morning => Time.Noon,
-            Time.Noon => Time.Evening,
-            Time.Evening => Time.Night,
-            _ => time,
+        Game.Save.TimeOfDay = timeOfDay switch {
+            TimeOfDay.Morning => TimeOfDay.Noon,
+            TimeOfDay.Noon => TimeOfDay.Evening,
+            TimeOfDay.Evening => TimeOfDay.Night,
+            _ => timeOfDay,
         };
         ApplyCurrentTimeSettings();
     }
 
     private void ApplyCurrentTimeSettings()
     {
-        if (Game.Save.Time == _currentSetting.time)
+        if (Game.Save.TimeOfDay == _currentSetting.timeOfDay)
             return;
 
-        TimeSetting setting = GetSetting(Game.Save.Time);
+        TimeSetting setting = GetSetting(Game.Save.TimeOfDay);
         _animationCts?.Cancel();
         _animationCts = new CancellationTokenSource();
         PlayTransition(_currentSetting, setting, _animationCts.Token).Forget();
     }
 
-    private TimeSetting GetSetting(Time time)
+    private TimeSetting GetSetting(TimeOfDay timeOfDay)
     {
         foreach (TimeSetting setting in timeSettings)
         {
-            if (setting.time == time)
+            if (setting.timeOfDay == timeOfDay)
                 return setting;
         }
 
@@ -140,15 +156,16 @@ public class TimeSystem : MonoBehaviour, IConsoleDebugInfo
         if (GUILayout.Button("Reset Time"))
             ResetTime();
         
-        GUILayout.Label(Game.Save.Time.ToString());
-        GUILayout.Label(_currentSetting.time.ToString());
+        GUILayout.Label(Game.Save.TimeOfDay.ToString());
+        GUILayout.Label(_currentSetting.timeOfDay.ToString());
         GUILayout.Label(_currentSetting.sunAngle.ToString(CultureInfo.InvariantCulture));
     }
 
     [Serializable]
     public struct TimeSetting
     {
-        public Time time;
+        [FormerlySerializedAs("time")]
+        public TimeOfDay timeOfDay;
         
         [Header("Audio")]
         public EventReference[] ambienceOptions;
@@ -166,7 +183,7 @@ public class TimeSystem : MonoBehaviour, IConsoleDebugInfo
     }
 }
 
-public enum Time
+public enum TimeOfDay
 {
     Morning,
     Noon,
