@@ -27,8 +27,7 @@ namespace Ltg8
 #if UNITY_EDITOR
             if (Game.Settings.overworldSceneNames.Contains(currentSceneName))
             {
-                // do stuff like spawning items, player, ect.
-                await Game.Overworld.LoadScene(currentSceneName);
+                await Game.Overworld.LoadFromSave();
             }
             else
             {

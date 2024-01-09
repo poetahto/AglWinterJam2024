@@ -1,5 +1,4 @@
 ﻿using DefaultNamespace;
-using Ltg8;
 using UnityEngine;
 
 public class OverworldSaveData
@@ -10,7 +9,6 @@ public class OverworldSaveData
     public bool HasHeldItemTarget;
     public Vector3 HeldItemTarget;
     public int HeldItemIndex = NoHeldItem;
-    public NpcData[] Npcs = new NpcData[100];
     public ItemData[] Items = new ItemData[100];
     public string[] PreSpawnedItems = new string[100];
     public TimeOfDay TimeOfDay;

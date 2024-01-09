@@ -57,7 +57,7 @@ public class SaveSerializer : MonoBehaviour, IConsoleDebugInfo
     [ConsoleCommand("save")]
     public static void ConsoleSave()
     {
-        Game.Serializer.WriteSaveData().Forget();
+        GameUtil.Save().Forget();
     }
 
     public string DebugName => "serializer";
@@ -71,10 +71,10 @@ public class SaveSerializer : MonoBehaviour, IConsoleDebugInfo
         GUI.enabled = !Busy;
 
         if (GUILayout.Button("Save To Disk"))
-            WriteSaveData().Forget();
+            GameUtil.Save().Forget();
 
         if (GUILayout.Button("Load From Disk"))
-            ReadSaveData().Forget();
+            GameUtil.Load().Forget();
 
         GUI.enabled = true;
 
@@ -82,17 +82,5 @@ public class SaveSerializer : MonoBehaviour, IConsoleDebugInfo
         if (GUILayout.Button("Open Save Folder"))
             UnityEditor.EditorUtility.RevealInFinder(SavePath);
 #endif
-    }
-    
-    private async UniTaskVoid WriteSaveData()
-    {
-        await WriteToDisk(_currentDebugSaveId, Game.Save);
-        await WriteToDisk("persistent_save", Game.PersistentSave);
-    }
-
-    private async UniTaskVoid ReadSaveData()
-    {
-        Game.Save = await ReadFromDisk(_currentDebugSaveId, new OverworldSaveData());
-        Game.PersistentSave = await ReadFromDisk("persistent_save", new PersistentSaveData());
     }
 }

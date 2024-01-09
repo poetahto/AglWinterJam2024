@@ -5,7 +5,8 @@ using UnityEngine;
 [CreateAssetMenu]
 public class GameSettings : ScriptableObject
 {
-    public List<OverworldNpcView> npcViewPrefabs;
+    public List<OverworldNpcView> npcPrefabs;
     public List<string> overworldSceneNames;
     public GameObject playerPrefab;
 }
+

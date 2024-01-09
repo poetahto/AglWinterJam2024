@@ -1,16 +1,48 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using Cysharp.Threading.Tasks;
 using DefaultNamespace;
 using pt_player_3d.Scripts.Rotation;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+
 namespace Ltg8
 {
+    public class OverworldNpcView : MonoBehaviour
+    {
+        public NpcType type;
+    }
+
+    [CreateAssetMenu]
+    public class FlipBookAnimation : ScriptableObject
+    {
+        
+    }
+
+    public class FlipBookMovementAnimator : MonoBehaviour
+    {
+        [SerializeField] private float walkThreshold = 1;
+        [SerializeField] private SpriteRenderer spriteRenderer;
+        private Vector3 _prevPos;
+
+        private void Update()
+        {
+            Vector3 curPos = transform.position;
+            Vector3 velocity = (curPos - _prevPos) / Time.deltaTime;
+            float speed = velocity.magnitude;
+            _prevPos = curPos;
+        }
+    }
+
+    public enum NpcType
+    {
+        Farmer,
+    }
+    
     public class OverworldSystem : MonoBehaviour
     {
-        private OverworldNpcSpawner _spawner;
+        private OverworldEventFactory _eventFactory;
 
-        public NpcGenerator NpcGenerator { get; private set; }
         public ItemSystem Items { get; private set; }
         public DayNightSystem DayNight { get; private set; }
         public bool ReadyForNextDay { get; set; }
@@ -21,8 +53,7 @@ namespace Ltg8
             SceneManager.SetActiveScene(SceneManager.GetSceneByName(Game.Save.PlayerScene));
             Items = FindAnyObjectByType<ItemSystem>();
             DayNight = FindObjectOfType<DayNightSystem>();
-            NpcGenerator = new NpcGenerator();
-            _spawner = FindAnyObjectByType<OverworldNpcSpawner>();
+            _eventFactory = FindAnyObjectByType<OverworldEventFactory>();
             
             PlayerSaveTracker playerSaveTracker = FindAnyObjectByType<PlayerSaveTracker>();
             GameObject player = playerSaveTracker == null ? Instantiate(Game.Settings.playerPrefab) : playerSaveTracker.gameObject;
@@ -33,33 +64,17 @@ namespace Ltg8
             OverworldGameplayLoop(gameObject.GetCancellationTokenOnDestroy()).Forget(); // todo: this cts probably isnt good
         }
 
-        public async UniTask LoadScene(string sceneName)
-        {
-            if (Game.Save.PlayerScene == sceneName)
-            {
-                await LoadFromSave();
-                return;
-            }
-                
-            await SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
-            SceneManager.SetActiveScene(SceneManager.GetSceneByName(sceneName));
-            Items = FindAnyObjectByType<ItemSystem>();
-            DayNight = FindObjectOfType<DayNightSystem>();
-            NpcGenerator = new NpcGenerator();
-            _spawner = FindAnyObjectByType<OverworldNpcSpawner>();
-            
-            Game.ItemSystem.SpawnSavedItems(); // todo: better handle diff scenes
-            OverworldGameplayLoop(gameObject.GetCancellationTokenOnDestroy()).Forget();
-        }
-
         private async UniTask OverworldGameplayLoop(CancellationToken token = default)
         {
             while (!token.IsCancellationRequested)
             {
                 ReadyForNextDay = false;
-                _spawner.IsSpawning = true;
-                await UniTask.WaitUntil(() => Game.Save.TimeOfDay == TimeOfDay.Night, cancellationToken: token);
-                _spawner.IsSpawning = false;
+                while (Game.Save.TimeOfDay != TimeOfDay.Night && !token.IsCancellationRequested)
+                {
+                    OverworldEvent e = _eventFactory.SpawnEvent();
+                    await UniTask.WaitUntil(() => e.IsDone, cancellationToken: token);
+                    await GameUtil.Save();
+                }
                 await UniTask.WaitUntil(() => ReadyForNextDay, cancellationToken: token);
                 DayNight.ResetTime();
             }
