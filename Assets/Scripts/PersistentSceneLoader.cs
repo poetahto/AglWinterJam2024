@@ -27,6 +27,7 @@ namespace Ltg8
 #if UNITY_EDITOR
             if (Game.Settings.overworldSceneNames.Contains(currentSceneName))
             {
+                Game.Save.PlayerScene = currentSceneName;
                 await Game.Overworld.LoadFromSave();
             }
             else

@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb152e53690b410899a89d26239edfae, type: 3}
+  m_Name: TestTalk
+  m_EditorClassIdentifier: 
+  frames:
+  - {fileID: -1578827126216904464, guid: 2d889c2ee6d834d48aeb4993dcb2722c, type: 3}
+  - {fileID: 3452796655258235082, guid: 2d889c2ee6d834d48aeb4993dcb2722c, type: 3}
+  animationRate: 0.1

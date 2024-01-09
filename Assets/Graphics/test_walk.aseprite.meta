@@ -161,26 +161,6 @@ ScriptedImporter:
     uvTransform: {x: 104, y: 4}
   - name: test_walk_Frame_2
     originalName: 
-    pivot: {x: 0.47826087, y: -0.0057471264}
-    alignment: 9
-    border: {x: 0, y: 0, z: 0, w: 0}
-    rect:
-      serializedVersion: 2
-      x: 4
-      y: 186
-      width: 92
-      height: 174
-    spriteID: 7552fa1bfb3781944a948fe1f27943b8
-    spriteBone: []
-    spriteOutline: []
-    vertices: []
-    spritePhysicsOutline: []
-    indices: 
-    edges: []
-    tessellationDetail: 0
-    uvTransform: {x: 4, y: 186}
-  - name: test_walk_Frame_3
-    originalName: 
     pivot: {x: 0.5135135, y: 0}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
@@ -190,7 +170,7 @@ ScriptedImporter:
       y: 180
       width: 74
       height: 169
-    spriteID: 960c39ec391fc814881196dd088d5aaa
+    spriteID: 7552fa1bfb3781944a948fe1f27943b8
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -199,6 +179,26 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 104, y: 180}
+  - name: test_walk_Frame_3
+    originalName: 
+    pivot: {x: 0.47826087, y: -0.0057471264}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 186
+      width: 92
+      height: 174
+    spriteID: 960c39ec391fc814881196dd088d5aaa
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 186}
   spriteSheetImportData: []
   asepriteLayers:
   - layerIndex: 0
@@ -227,18 +227,18 @@ ScriptedImporter:
     - name: test_walk_Frame_2
       frameIndex: 2
       cellRect:
-        x: 20
-        y: 1
-        width: 92
-        height: 174
-      spriteId: 7552fa1bfb3781944a948fe1f27943b8
-    - name: test_walk_Frame_3
-      frameIndex: 3
-      cellRect:
         x: 26
         y: 0
         width: 74
         height: 169
+      spriteId: 7552fa1bfb3781944a948fe1f27943b8
+    - name: test_walk_Frame_3
+      frameIndex: 3
+      cellRect:
+        x: 20
+        y: 1
+        width: 92
+        height: 174
       spriteId: 960c39ec391fc814881196dd088d5aaa
     linkedCells: []
     parentIndex: -1

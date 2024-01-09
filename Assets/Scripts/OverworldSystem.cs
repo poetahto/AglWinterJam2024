@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using Cysharp.Threading.Tasks;
 using DefaultNamespace;
 using pt_player_3d.Scripts.Rotation;
@@ -11,27 +10,6 @@ namespace Ltg8
     public class OverworldNpcView : MonoBehaviour
     {
         public NpcType type;
-    }
-
-    [CreateAssetMenu]
-    public class FlipBookAnimation : ScriptableObject
-    {
-        
-    }
-
-    public class FlipBookMovementAnimator : MonoBehaviour
-    {
-        [SerializeField] private float walkThreshold = 1;
-        [SerializeField] private SpriteRenderer spriteRenderer;
-        private Vector3 _prevPos;
-
-        private void Update()
-        {
-            Vector3 curPos = transform.position;
-            Vector3 velocity = (curPos - _prevPos) / Time.deltaTime;
-            float speed = velocity.magnitude;
-            _prevPos = curPos;
-        }
     }
 
     public enum NpcType
@@ -56,8 +34,13 @@ namespace Ltg8
             _eventFactory = FindAnyObjectByType<OverworldEventFactory>();
             
             PlayerSaveTracker playerSaveTracker = FindAnyObjectByType<PlayerSaveTracker>();
-            GameObject player = playerSaveTracker == null ? Instantiate(Game.Settings.playerPrefab) : playerSaveTracker.gameObject;
-            player.transform.position = Game.Save.PlayerPosition;
+            GameObject player;
+            if (playerSaveTracker == null)
+            {
+                player = Instantiate(Game.Settings.playerPrefab);
+                player.transform.position = Game.Save.PlayerPosition;
+            }
+            else player = playerSaveTracker.gameObject;
             player.GetComponent<RotationSystem>().Rotation = Game.Save.PlayerRotation;
             
             Game.ItemSystem.SpawnSavedItems(); // todo: better handle diff scenes
