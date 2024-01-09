@@ -15,5 +15,4 @@ public class OverworldSaveData
     public Vector3 PlayerPosition;
     public Vector3 PlayerRotation;
     public string PlayerScene;
-    public bool BridgeOpen;
 }
