@@ -65,7 +65,7 @@ public class PlayerDialogueSystem : MonoBehaviour
 
     private void HandleOptionSelected(string id)
     {
-        OnOptionSelected?.Invoke(id);
         RemoveAllOptions();
+        OnOptionSelected?.Invoke(id);
     }
 }

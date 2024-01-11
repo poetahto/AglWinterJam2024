@@ -53,6 +53,7 @@ namespace Ltg8
             
             Decisions.ChoiceLowerBridge("lower_bridge", HandleOpenBridge);
             Decisions.ChoiceDialogueOption("troll", HandleTrolling, "Thanks for the free duck, but you're still not getting in.");
+            Decisions.Initialize();
         }
         private async UniTaskVoid HandleTrolling()
         {
