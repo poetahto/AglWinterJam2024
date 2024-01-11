@@ -39,9 +39,9 @@ namespace Ltg8
         }
         private async UniTaskVoid HandleAskForSoul()
         {
+            FinishEvent();
             NpcSay("Yeah... I'm good.", 0);
             await NpcMove(PathType.EntranceToHills, 0);
-            FinishEvent();
         }
         private async UniTaskVoid HandleAskForDuck()
         {
@@ -57,24 +57,24 @@ namespace Ltg8
         }
         private async UniTaskVoid HandleTrolling()
         {
+            FinishEvent();
             NpcSay("MAN YOU SUCK!!!", 0);
             await NpcMove(PathType.EntranceToHills, 0);
-            FinishEvent();
         }
         private async UniTaskVoid HandleAskForReason()
         {
+            FinishEvent();
             NpcSay("You ask too many questions.", 0, autoClearSeconds: 3);
             await NpcMove(PathType.EntranceToHills, 0);
-            FinishEvent();
         }
         private async UniTaskVoid HandleGiveDuck()
         {
+            FinishEvent();
             NpcSay("Is this a duck?", 0);
             await Delay(1);
             NpcSay("Thanks!", 0, autoClearSeconds: 3);
             GameUtil.TryRemoveItemFromBucket(ItemType.ToyDuck);
             await NpcMove(PathType.EntranceToHills, 0);
-            FinishEvent();
         }
     }
 }

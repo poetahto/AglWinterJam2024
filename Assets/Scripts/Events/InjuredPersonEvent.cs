@@ -43,16 +43,16 @@ namespace a
         }
         private async UniTaskVoid HandleLowerBridge()
         {
-            await NpcMoveAll(PathType.EntranceToCity);
             FinishEvent();
+            await NpcMoveAll(PathType.EntranceToCity);
             Game.Save.Karma += _isFaking ? -1 : 1;
             if (_isFaking) Game.Save.DailyDeception++;
         }
         private async UniTaskVoid HandleReject()
         {
+            FinishEvent();
             NpcSay(!_isFaking ? "How dare you doom him to death!" : "Rats.", 1);
             await NpcMoveAll(PathType.EntranceToHills);
-            FinishEvent();
             Game.Save.Karma += _isFaking ? 1 : -1;
         }
     }

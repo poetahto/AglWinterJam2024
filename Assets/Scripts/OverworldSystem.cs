@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using DefaultNamespace;
@@ -62,6 +63,8 @@ namespace Ltg8
 
         private async UniTask OverworldGameplayLoop(CancellationToken token = default)
         {
+            List<OverworldEvent> events = new List<OverworldEvent>();
+                
             while (!token.IsCancellationRequested)
             {
                 Game.Save.DailyDeception = 0;
@@ -69,9 +72,9 @@ namespace Ltg8
                 while (Game.Save.TimeOfDay != TimeOfDay.Night && !token.IsCancellationRequested)
                 {
                     OverworldEvent e = EventFactory.SpawnEvent();
+                    events.Add(e);
                     await UniTask.WaitUntil(() => e.IsDone, cancellationToken: token);
                     await GameUtil.Save();
-                    Destroy(e.gameObject);
                 }
                 await UniTask.WaitUntil(() => ReadyForNextDay, cancellationToken: token);
                 DayNight.ResetTime();
@@ -80,6 +83,11 @@ namespace Ltg8
                 deceptionText.SetText($"You were deceived {Game.Save.DailyDeception} times today.");
                 await UniTask.Delay(TimeSpan.FromSeconds(10), cancellationToken: token);
                 deceptionText.gameObject.SetActive(false);
+
+                foreach (OverworldEvent e in events)
+                    Destroy(e.gameObject);
+                
+                events.Clear();
             }
         }
     }

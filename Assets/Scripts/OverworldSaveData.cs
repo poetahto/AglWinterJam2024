@@ -17,6 +17,6 @@ public class OverworldSaveData
     public TimeOfDay TimeOfDay;
     public Vector3 PlayerPosition;
     public Vector3 PlayerRotation;
-    public string PlayerScene;
+    public string PlayerScene = "Walls 1";
     public BucketState BucketState = BucketState.AtTop;
 }

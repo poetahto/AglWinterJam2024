@@ -7,7 +7,7 @@ namespace Ltg8
     {
         public OverworldEventGroup eventGroup;
 
-        private List<OverworldEvent> _eventPool;
+        private List<OverworldEvent> _eventPool = new List<OverworldEvent>();
         private int _index;
 
         private void Start()

@@ -65,10 +65,10 @@ namespace Ltg8
             {
                 NpcSay("Thank you mate!");
             }
+            FinishEvent();
             Game.Save.Karma += _isThief ? -2 : 2;
             Game.Save.DailyDeception += _isThief ? 1 : 0;
             await NpcMove(PathType.EntranceToCity);
-            FinishEvent();
         }
         private async UniTaskVoid HandleReject()
         {
@@ -80,10 +80,10 @@ namespace Ltg8
             {
                 NpcSay("What? High command will know about this.");
             }
+            FinishEvent();
             await NpcMove(PathType.EntranceToHills);
             Game.Save.Karma += _isThief ? 2 : -2;
             Game.Save.DailyDeception += _isThief ? 1 : 0;
-            FinishEvent();
         }
     }
 }

@@ -72,6 +72,9 @@ namespace Ltg8
 
         protected void FinishEvent()
         {
+            foreach (GameObject npc in npcs)
+                Game.Overworld.NpcDialogue.ClearText(npc);
+            
             IsDone = true;
         }
     }

@@ -49,16 +49,16 @@ namespace Ltg8
         }
         private async UniTaskVoid HandleOpenBridge()
         {
+            FinishEvent();
             Game.Save.Karma += _isThief ? -1 : 1;
             if (_isThief) Game.Save.DailyDeception++;
             await NpcMove(PathType.EntranceToCity);
-            FinishEvent();
         }
         private async UniTaskVoid HandleReject()
         {
+            FinishEvent();
             await NpcMove(PathType.EntranceToHills);
             Game.Save.Karma += _isThief ? 1 : -1;
-            FinishEvent();
         }
     }
 }

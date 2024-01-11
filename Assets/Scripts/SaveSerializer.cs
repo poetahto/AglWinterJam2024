@@ -9,6 +9,11 @@ public class SaveSerializer : MonoBehaviour, IConsoleDebugInfo
 {
     public static string SavePath => $"{Application.persistentDataPath}/saves";
     public bool Busy { get; private set; }
+
+    public bool SaveExists(string fileId)
+    {
+        return fileId != null && File.Exists($"{SavePath}/{fileId}.json");
+    }
     
     public async UniTask WriteToDisk<T>(string fileId, T data)
     {
