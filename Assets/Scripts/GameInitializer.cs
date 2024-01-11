@@ -9,7 +9,6 @@ public static class Game
     public static OverworldSaveData Save = new OverworldSaveData();
     public static PersistentSaveData PersistentSave = new PersistentSaveData();
     public static SaveSerializer Serializer;
-    public static ItemSystem ItemSystem;
     public static OverworldSystem Overworld;
 }
 
@@ -20,7 +19,6 @@ public class GameInitializer : MonoBehaviour
     public async UniTask Initialize()
     {
         Game.Settings = settings;
-        Game.ItemSystem = FindAnyObjectByType<ItemSystem>();
         Game.Serializer = FindAnyObjectByType<SaveSerializer>();
         Game.Overworld = FindAnyObjectByType<OverworldSystem>();
 

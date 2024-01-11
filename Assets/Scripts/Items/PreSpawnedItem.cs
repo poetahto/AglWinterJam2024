@@ -2,18 +2,19 @@
 using UnityEngine;
 namespace DefaultNamespace
 {
+
     [RequireComponent(typeof(OverworldItemView))]
-    public class PreSpawnedItem : MonoBehaviour
+    public class PreSpawnedItem : OverworldBehavior
     {
         public string itemNameId;
         
-        private void Start()
+        public override void OnStartOverworld()
         {
             OverworldItemView itemView = GetComponent<OverworldItemView>();
 
             if (Game.Save.PreSpawnedItems.All(s => s != itemNameId))
             {
-                Game.ItemSystem.SpawnItem(itemView.GetItemData());
+                Game.Overworld.Items.SpawnItem(itemView.GetItemData());
 
                 // save our name in the pre-spawned items list so we dont get spawned again.
                 for (int i = 0; i < Game.Save.PreSpawnedItems.Length; i++)

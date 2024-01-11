@@ -24,11 +24,13 @@ namespace Ltg8
         public ItemSystem Items { get; private set; }
         public DayNightSystem DayNight { get; private set; }
         public bool ReadyForNextDay { get; set; }
+        public bool IsLoaded { get; private set; }
         
         public async UniTask LoadFromSave()
         {
             await SceneManager.LoadSceneAsync(Game.Save.PlayerScene, LoadSceneMode.Additive);
             SceneManager.SetActiveScene(SceneManager.GetSceneByName(Game.Save.PlayerScene));
+            await UniTask.Yield();
             Items = FindAnyObjectByType<ItemSystem>();
             DayNight = FindObjectOfType<DayNightSystem>();
             _eventFactory = FindAnyObjectByType<OverworldEventFactory>();
@@ -43,8 +45,13 @@ namespace Ltg8
             else player = playerSaveTracker.gameObject;
             player.GetComponent<RotationSystem>().Rotation = Game.Save.PlayerRotation;
             
-            Game.ItemSystem.SpawnSavedItems(); // todo: better handle diff scenes
+            Items.SpawnSavedItems(); // todo: better handle diff scenes
+
+            foreach (OverworldBehavior overworldBehavior in FindObjectsByType<OverworldBehavior>(FindObjectsSortMode.None))
+                overworldBehavior.OnStartOverworld();
+            
             OverworldGameplayLoop(gameObject.GetCancellationTokenOnDestroy()).Forget(); // todo: this cts probably isnt good
+            IsLoaded = true;
         }
 
         private async UniTask OverworldGameplayLoop(CancellationToken token = default)

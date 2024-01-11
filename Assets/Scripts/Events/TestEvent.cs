@@ -2,9 +2,9 @@
 using UnityEngine.AI;
 namespace Ltg8
 {
+    
     public class TestEvent : OverworldEvent
     {
-        [SerializeField] private NavMeshAgent npc;
         [SerializeField] private Transform bucketPosition;
         [SerializeField] private Transform preGatePosition;
         

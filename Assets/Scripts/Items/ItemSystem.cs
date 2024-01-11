@@ -6,8 +6,6 @@ namespace DefaultNamespace
 {
     public class ItemSystem : MonoBehaviour
     {
-        public OverworldItemView[] itemViewPrefabs;
-
         private readonly Dictionary<int, OverworldItemView> _spawnedItemViews = new Dictionary<int, OverworldItemView>();
 
         public void SpawnSavedItems()
@@ -31,7 +29,7 @@ namespace DefaultNamespace
 
         private OverworldItemView CreateItemAtIndex(int index, ItemData data)
         {
-            foreach (OverworldItemView itemView in itemViewPrefabs)
+            foreach (OverworldItemView itemView in Game.Settings.itemPrefabs)
             {
                 if (itemView.itemType == data.type)
                 {

@@ -55,7 +55,7 @@ namespace DefaultNamespace
             }
             
             if (Game.Save.HeldItemIndex != OverworldSaveData.NoHeldItem)
-                Game.ItemSystem.FindItem(Game.Save.HeldItemIndex).SetHeld(false);
+                Game.Overworld.Items.FindItem(Game.Save.HeldItemIndex).SetHeld(false);
             
             Game.Save.HeldItemIndex = SaveIndex;
             SetHeld(true);

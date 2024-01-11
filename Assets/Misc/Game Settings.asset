@@ -12,8 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81aeb7db59924225a2aa223faac81a36, type: 3}
   m_Name: Game Settings
   m_EditorClassIdentifier: Assembly-CSharp::GameSettings
-  npcViewPrefabs:
-  - {fileID: 5654375656054511538, guid: b9767e21234ed6c41a24a8e976a2f76c, type: 3}
+  itemPrefabs:
+  - {fileID: 5479830427578652015, guid: c80d05cb842e7c348a5c8f54f41632b4, type: 3}
+  npcPrefabs: []
   overworldSceneNames:
   - DanielTest
-  playerPrefab: {fileID: 0}
+  - Walls 1
+  playerPrefab: {fileID: 671050045194567213, guid: 7c1ca7b144b95e0478daa4447fdce62e,
+    type: 3}
