@@ -4,5 +4,6 @@
     {
         Invalid = 0,
         ToyDuck,
+        IDCard,
     }
 }

@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GameSettings
   itemPrefabs:
   - {fileID: 5479830427578652015, guid: c80d05cb842e7c348a5c8f54f41632b4, type: 3}
-  npcPrefabs: []
+  - {fileID: 8108735900626850630, guid: 3e6e88f0203d3ac4ebe15881904b97e2, type: 3}
   overworldSceneNames:
   - DanielTest
   - Walls 1
-  playerPrefab: {fileID: 671050045194567213, guid: 7c1ca7b144b95e0478daa4447fdce62e,
-    type: 3}
+  playerPrefab: {fileID: 0}
+  openDialogueKey: 101
