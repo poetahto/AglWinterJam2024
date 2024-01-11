@@ -6,6 +6,7 @@ public class OverworldSaveData
     // todo: idk dont rlly like constants here
     public const int InvalidId = -1;
 
+    public int Karma;
     public bool HasHeldItemTarget;
     public Vector3 HeldItemTarget;
     public int HeldItemIndex = InvalidId;

@@ -34,12 +34,21 @@ namespace Ltg8
             await UniTask.Delay(TimeSpan.FromSeconds(seconds));
         }
 
-        protected void NpcSay(int id, string message, float autoClearSeconds = -1)
+        protected async UniTask NpcWaitForBucket(int id = 0)
+        {
+            if (Game.Save.BucketState != BucketState.AtBottom)
+            {
+                NpcSay("Send the bucket down and I'll put it in.");
+                await GameUtil.WaitForBucketToLower();
+            }
+        }
+
+        protected void NpcSay(string message, int id = 0, float autoClearSeconds = -1)
         {
             npcs[id].SayText(message, autoClearSeconds);
         }
 
-        protected async UniTask NpcMove(int id, PathType path)
+        protected async UniTask NpcMove(PathType path, int id = 0)
         {
             GameObject npc = npcs[id];
             Spline spline = path switch {
@@ -56,7 +65,7 @@ namespace Ltg8
             UniTask[] movementTasks = new UniTask[npcs.Length];
             
             for (int i = 0; i < npcs.Length; i++)
-                movementTasks[i] = NpcMove(i, path);
+                movementTasks[i] = NpcMove(path, i);
 
             await UniTask.WhenAll(movementTasks);
         }

@@ -19,7 +19,7 @@ namespace pt_player_3d.Scripts.Interaction
 
         private void Update()
         {
-            _interactionSystem.IsInteractHeld = Input.GetKey(interactKey);
+            _interactionSystem.IsInteractHeld = Input.GetKey(interactKey) || Input.GetKey(KeyCode.Mouse0);
         }
     }
 }

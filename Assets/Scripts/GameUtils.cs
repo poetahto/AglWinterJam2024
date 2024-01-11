@@ -2,9 +2,34 @@
 using Cysharp.Threading.Tasks;
 using DefaultNamespace;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public static class GameUtil
 {
+    public enum Gender
+    {
+        Female,
+        Male,
+    }
+
+    public struct CharacterData
+    {
+        public string FirstName;
+        public string LastName;
+        public Gender Gender;
+    }
+    
+    public static CharacterData GetRandomCharacter()
+    {
+        Gender gender = Random.value > 0.5f ? Gender.Male : Gender.Female;
+        CharacterData data = new CharacterData {
+            Gender = gender,
+            FirstName = gender == Gender.Male ? Names.firstNamesM[Random.Range(0, Names.firstNamesM.Length)] : Names.firstNamesFM[Random.Range(0, Names.firstNamesFM.Length)],
+            LastName = Names.lastNames[Random.Range(0, Names.lastNames.Length)],
+        };
+        return data;
+    }
+    
     public static bool TryGetItemInBucket(ItemType type, out OverworldItemView item)
     {
         foreach (OverworldItemView itemView in Game.Overworld.BucketItemHolder.Items)
@@ -37,14 +62,14 @@ public static class GameUtil
         return false;
     }
 
-    public static void PutItemInBucket(ItemType type)
+    public static OverworldItemView PutItemInBucket(ItemType type)
     {
         ItemData itemData = new ItemData {
             type = type,
             position = Game.Overworld.BucketItemHolder.transform.position,
             rotation = Quaternion.identity,
         };
-        Game.Overworld.Items.SpawnItem(itemData);
+        return Game.Overworld.Items.SpawnItem(itemData);
     }
     
     public static async UniTask Save()
