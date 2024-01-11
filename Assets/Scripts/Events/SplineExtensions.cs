@@ -6,10 +6,10 @@ namespace Ltg8
 {
     public static class SplineExtensions
     {
-        public static async UniTask FollowPath(this GameObject gameObject, SplineContainer spline, float speed = 5)
+        public static async UniTask FollowPath(this GameObject gameObject, Spline spline, float speed = 5)
         {
             float elapsed = 0;
-            float length = spline.CalculateLength();
+            float length = spline.GetLength();
             float duration = length / speed;
 
             while (elapsed < duration)

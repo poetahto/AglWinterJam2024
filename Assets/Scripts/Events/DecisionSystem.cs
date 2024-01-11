@@ -46,7 +46,7 @@ namespace Ltg8
             _bucketChoiceIds.Add(item, id);
         }
 
-        public void BeginDecision()
+        public void Initialize()
         {
             HandleBucketStateChange(Game.Save.BucketState);
         }

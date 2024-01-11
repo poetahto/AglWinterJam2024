@@ -8,8 +8,10 @@ using UnityEngine.SceneManagement;
 
 namespace Ltg8
 {
+
     public class OverworldSystem : MonoBehaviour
     {
+        public PathingSystem Pathing { get; private set; }
         public BucketControls BucketControls { get; private set; }
         public BucketItemHolder BucketItemHolder { get; private set; }
         public PlayerDialogueSystem PlayerDialogue { get; private set; }
@@ -36,6 +38,7 @@ namespace Ltg8
             PlayerDialogue = FindAnyObjectByType<PlayerDialogueSystem>();
             BucketItemHolder = FindAnyObjectByType<BucketItemHolder>();
             BucketControls = FindAnyObjectByType<BucketControls>();
+            Pathing = FindAnyObjectByType<PathingSystem>();
             
             if (Player == null)
             {
