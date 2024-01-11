@@ -20,6 +20,7 @@ namespace pt_player_3d.Scripts.Interaction
         private bool _wasInteractHeld;
         private RaycastHit[] _hitBuffer = new RaycastHit[BufferSize];
         private Comparer<RaycastHit> _hitDistanceComparer = Comparer<RaycastHit>.Create((hitA, hitB) => hitA.distance.CompareTo(hitB.distance));
+        private Interactable _currentInteractionTarget;
 
         private void FixedUpdate()
         {
@@ -29,14 +30,7 @@ namespace pt_player_3d.Scripts.Interaction
 
         public void Tick(float deltaTime)
         {
-            if (!_wasInteractHeld && IsInteractHeld) // Just pressed interact
-                TryToInteract();
-
-            _wasInteractHeld = IsInteractHeld;
-        }
-
-        private void TryToInteract()
-        {
+            // Update current interact target
             Ray ray = new Ray(viewDirection.transform.position, viewDirection.forward);
             int hits = Physics.RaycastNonAlloc(ray, _hitBuffer, float.PositiveInfinity, Physics.DefaultRaycastLayers);
             Assert.IsTrue(hits <= BufferSize);
@@ -48,9 +42,20 @@ namespace pt_player_3d.Scripts.Interaction
 
                 if (hit.collider.TryGetComponentWithRigidbody(out Interactable interactable) && interactable.CanInteract(gameObject))
                 {
-                    interactable.Interact();
+                    if (_currentInteractionTarget != interactable)
+                    {
+                        _currentInteractionTarget.SetLookedAt(false);
+                        interactable.SetLookedAt(true);
+                    }
+                    _currentInteractionTarget = interactable;
                 }
             }
+            
+            // Check for interact input
+            if (!_wasInteractHeld && IsInteractHeld && _currentInteractionTarget != null) // Just pressed interact
+                _currentInteractionTarget.Interact();
+
+            _wasInteractHeld = IsInteractHeld;
         }
     }
 }

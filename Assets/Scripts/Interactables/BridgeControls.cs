@@ -10,12 +10,18 @@ public class BridgeControls : Interactable
     [SerializeField] private float openAngle;
     [SerializeField] private float duration;
     
-    public event Action OnBridgeOpened;
+    public event Action OnBridgeOpenStart;
+    public event Action OnBridgeOpenEnd;
     public bool IsLocked { get; set; } = true;
 
     private void Start()
     {
         bridgeObject.transform.rotation = Quaternion.Euler(closedAngle, 0, 0);
+    }
+
+    public override bool CanInteract(GameObject source)
+    {
+        return base.CanInteract(source) && !IsLocked;
     }
 
     public override void Interact()
@@ -26,9 +32,9 @@ public class BridgeControls : Interactable
             return;
 
         IsLocked = true;
-        
+        OnBridgeOpenStart?.Invoke();
         PlayBridgeAnimation(openAngle)
-            .ContinueWith(() => OnBridgeOpened?.Invoke())
+            .ContinueWith(() => OnBridgeOpenEnd?.Invoke())
             .Forget();
     }
 

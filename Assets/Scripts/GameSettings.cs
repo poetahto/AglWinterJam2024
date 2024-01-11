@@ -8,6 +8,7 @@ public class GameSettings : ScriptableObject
 {
     public List<OverworldItemView> itemPrefabs;
     public List<string> overworldSceneNames;
-    public GameObject playerPrefab;
+    public OverworldPlayerView playerPrefab;
+    public KeyCode openDialogueKey = KeyCode.E;
 }
 

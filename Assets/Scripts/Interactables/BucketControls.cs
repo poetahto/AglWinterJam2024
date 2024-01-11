@@ -44,15 +44,16 @@ public class BucketControls : Interactable
         Game.Save.BucketState = targetState;
         float start = splineAnimator.NormalizedTime;
         float end = targetState == BucketState.AtBottom ? bottomValue : topValue;
+        float duration = splineAnimator.Duration;
         float elapsed = 0;
 
-        while (elapsed < splineAnimator.Duration)
+        while (elapsed < duration)
         {
             if (token.IsCancellationRequested)
                 return;
             
             elapsed += Time.deltaTime;
-            float t = elapsed / splineAnimator.Duration;
+            float t = elapsed / duration;
             splineAnimator.NormalizedTime = Mathf.Lerp(start, end, t);
             await UniTask.Yield();
         }

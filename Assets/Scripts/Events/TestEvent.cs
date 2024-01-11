@@ -42,7 +42,7 @@ namespace Ltg8
             Decisions.ChoiceDialogueOption("ask_for_money", HandleAskForMoney, "No. But you could give me something to change my mind.");
             Decisions.ChoiceDialogueOption("ask_for_reason", HandleAskForReason, "Why should I?");
             Decisions.ChoiceGiveBucketItem("give_duck", HandleGiveDuck, ItemType.ToyDuck);
-            Decisions.Finish();
+            Decisions.BeginDecision();
         }
 
         private async UniTaskVoid HandleOpenBridge()

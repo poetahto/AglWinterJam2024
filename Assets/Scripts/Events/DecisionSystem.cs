@@ -15,12 +15,13 @@ namespace Ltg8
         private readonly Dictionary<string, Func<UniTaskVoid>> _activeChoices = new Dictionary<string, Func<UniTaskVoid>>();
         private readonly Dictionary<ItemType, string> _bucketChoiceIds = new Dictionary<ItemType, string>();
         private string _bridgeChoiceId;
+        private Func<UniTaskVoid> _selectedCallback;
 
         protected override void Start()
         {
             base.Start();
             bucketControls.OnBucketStateChange += HandleBucketStateChange;
-            bridgeControls.OnBridgeOpened += HandleBridgeOpened;
+            bridgeControls.OnBridgeOpenStart += HandleBridgeOpenStart;
             dialogueSystem.OnOptionSelected += HandleDialogueOptionSelected;
         }
 
@@ -43,9 +44,15 @@ namespace Ltg8
             _bucketChoiceIds.Add(item, id);
         }
 
-        public void Finish()
+        public void BeginDecision()
         {
             HandleBucketStateChange(Game.Save.BucketState);
+        }
+
+        public void FinishDecision()
+        {
+            _selectedCallback?.Invoke();
+            _selectedCallback = null;
         }
 
         public void RemoveAllChoices()
@@ -61,19 +68,26 @@ namespace Ltg8
             if (!_activeChoices.ContainsKey(choiceId))
                 return;
 
-            _activeChoices[choiceId].Invoke().Forget();
+            _selectedCallback = _activeChoices[choiceId];
             RemoveAllChoices();
         }
 
-        private void HandleBridgeOpened()
+        private void HandleBridgeOpenStart()
         {
-            if (_bridgeChoiceId != null)
-                HandleChoiceSelected(_bridgeChoiceId);
+            HandleChoiceSelected(_bridgeChoiceId);
+            bridgeControls.OnBridgeOpenEnd += HandleBridgeOpenEnd;
+        }
+
+        private void HandleBridgeOpenEnd()
+        {
+            bridgeControls.OnBridgeOpenEnd -= HandleBridgeOpenEnd;
+            FinishDecision();
         }
 
         private void HandleDialogueOptionSelected(string optionId)
         {
             HandleChoiceSelected(optionId);
+            FinishDecision();
         }
 
         private void HandleBucketStateChange(BucketState state)
@@ -83,7 +97,11 @@ namespace Ltg8
                 foreach (OverworldItemView item in bucketItemHolder.Items)
                 {
                     if (_bucketChoiceIds.TryGetValue(item.itemType, out string choiceId))
+                    {
                         HandleChoiceSelected(choiceId);
+                        FinishDecision();
+                        break;
+                    }
                 }
             }
         }

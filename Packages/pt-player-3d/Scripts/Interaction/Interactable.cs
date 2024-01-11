@@ -11,11 +11,20 @@ namespace pt_player_3d.Scripts.Interaction
         [SerializeField]
         private float maxDistance = 3;
 
+        public Sprite crosshairSprite;
         public UnityEvent onInteract;
 
         public virtual bool CanInteract(GameObject source)
         {
             return (source.transform.position - transform.position).sqrMagnitude < maxDistance * maxDistance;
+        }
+
+        public virtual void SetLookedAt(bool isLookedAt)
+        {
+            if (debugInteractions)
+            {
+                Debug.Log($"Started looking at {name}: {isLookedAt}");
+            }
         }
 
         public virtual void Interact()

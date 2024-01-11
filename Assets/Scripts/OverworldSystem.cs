@@ -14,6 +14,7 @@ namespace Ltg8
         public DecisionSystem Decisions { get; private set; }
         public ItemSystem Items { get; private set; }
         public DayNightSystem DayNight { get; private set; }
+        public OverworldPlayerView Player { get; private set; }
         public bool ReadyForNextDay { get; set; }
         public bool IsLoaded { get; private set; }
         
@@ -26,17 +27,15 @@ namespace Ltg8
             DayNight = FindAnyObjectByType<DayNightSystem>();
             Decisions = FindAnyObjectByType<DecisionSystem>();
             EventFactory = FindAnyObjectByType<OverworldEventFactory>();
+            Player = FindAnyObjectByType<OverworldPlayerView>();
             
-            PlayerSaveTracker playerSaveTracker = FindAnyObjectByType<PlayerSaveTracker>();
-            GameObject player;
-            if (playerSaveTracker == null)
+            if (Player == null)
             {
-                player = Instantiate(Game.Settings.playerPrefab);
-                player.transform.position = Game.Save.PlayerPosition;
+                Player = Instantiate(Game.Settings.playerPrefab);
+                Player.transform.position = Game.Save.PlayerPosition;
             }
-            else player = playerSaveTracker.gameObject;
-            player.GetComponent<RotationSystem>().Rotation = Game.Save.PlayerRotation;
             
+            Player.GetComponent<RotationSystem>().Rotation = Game.Save.PlayerRotation;
             Items.SpawnSavedItems(); // todo: better handle diff scenes
 
             foreach (OverworldBehavior overworldBehavior in FindObjectsByType<OverworldBehavior>(FindObjectsSortMode.None))
