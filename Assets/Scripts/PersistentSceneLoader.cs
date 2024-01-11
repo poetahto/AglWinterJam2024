@@ -37,8 +37,8 @@ namespace Ltg8
                 SceneManager.SetActiveScene(SceneManager.GetSceneByName(currentSceneName));
             }
 #else
-            Game.Save.PlayerScene = "Walls 1";
-            await Game.Overworld.LoadFromSave();
+            await SceneManager.LoadSceneAsync("Main Menu", LoadSceneMode.Additive);
+            SceneManager.SetActiveScene(SceneManager.GetSceneByName("Main Menu"));
 #endif
         }
     }
