@@ -38,11 +38,11 @@ namespace pt_player_3d.Scripts.Interaction
 
         private void TryToInteract()
         {
-            if (Game.Save.HeldItemIndex != OverworldSaveData.NoHeldItem)
+            if (Game.Save.HeldItemIndex != OverworldSaveData.InvalidId)
             {
                 OverworldItemView heldItem = Game.Overworld.Items.FindItem(Game.Save.HeldItemIndex);
                 heldItem.SetHeld(false);
-                Game.Save.HeldItemIndex = OverworldSaveData.NoHeldItem;
+                Game.Save.HeldItemIndex = OverworldSaveData.InvalidId;
                 return;
             }
             
@@ -51,14 +51,20 @@ namespace pt_player_3d.Scripts.Interaction
             Assert.IsTrue(hits <= BufferSize);
             Array.Sort(_hitBuffer, 0, hits, _hitDistanceComparer);
 
-            if (hits > 0)
+            for (int i = 0; i < hits; i++)
             {
-                RaycastHit hit = _hitBuffer[0];
+                RaycastHit hit = _hitBuffer[i];
 
+                // if we hit something we can interact with, we can done.
                 if (hit.collider.TryGetComponentWithRigidbody(out Interactable interactable) && interactable.CanInteract(gameObject))
                 {
                     interactable.Interact();
+                    break;
                 }
+                
+                // if we hit a physical object, we are done.
+                if (!hit.collider.isTrigger)
+                    break;
             }
         }
     }

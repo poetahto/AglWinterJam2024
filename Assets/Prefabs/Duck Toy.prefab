@@ -74,7 +74,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   debugInteractions: 0
-  maxDistance: 3
+  maxDistance: 5
   onInteract:
     m_PersistentCalls:
       m_Calls: []
