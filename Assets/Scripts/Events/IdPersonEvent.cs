@@ -50,6 +50,7 @@ namespace Ltg8
         private async UniTaskVoid HandleOpenBridge()
         {
             Game.Save.Karma += _isThief ? -1 : 1;
+            Game.Save.DailyDeception += _isThief ? -1 : 1;
             await NpcMove(PathType.EntranceToCity);
             FinishEvent();
         }
@@ -57,6 +58,7 @@ namespace Ltg8
         {
             await NpcMove(PathType.EntranceToHills);
             Game.Save.Karma += _isThief ? 1 : -1;
+            Game.Save.DailyDeception += _isThief ? 1 : -1;
             FinishEvent();
         }
     }

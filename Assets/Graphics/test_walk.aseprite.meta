@@ -121,13 +121,13 @@ ScriptedImporter:
   animatedSpriteImportData:
   - name: test_walk_Frame_0
     originalName: 
-    pivot: {x: 0.47826087, y: -0.0057471264}
+    pivot: {x: 0.47826084, y: -0.0057471264}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
       x: 4
-      y: 4
+      y: 154
       width: 92
       height: 174
     spriteID: 38cdc767ca25cac4f92519e4bde70166
@@ -138,16 +138,16 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    uvTransform: {x: 4, y: 4}
+    uvTransform: {x: 4, y: 154}
   - name: test_walk_Frame_1
     originalName: 
-    pivot: {x: 0.46913582, y: 0}
+    pivot: {x: 0.4691358, y: 0}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 104
-      y: 4
+      x: 4
+      y: 336
       width: 81
       height: 168
     spriteID: df9dfbe1648af244582308173b6ebde9
@@ -158,16 +158,16 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    uvTransform: {x: 104, y: 4}
+    uvTransform: {x: 4, y: 336}
   - name: test_walk_Frame_2
     originalName: 
-    pivot: {x: 0.5135135, y: 0}
+    pivot: {x: 0.51351345, y: 0}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 104
-      y: 180
+      x: 261
+      y: 104
       width: 74
       height: 169
     spriteID: 7552fa1bfb3781944a948fe1f27943b8
@@ -178,16 +178,16 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    uvTransform: {x: 104, y: 180}
+    uvTransform: {x: 261, y: 104}
   - name: test_walk_Frame_3
     originalName: 
-    pivot: {x: 0.47826087, y: -0.0057471264}
+    pivot: {x: 0.47826084, y: -0.0057471264}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 4
-      y: 186
+      x: 161
+      y: 104
       width: 92
       height: 174
     spriteID: 960c39ec391fc814881196dd088d5aaa
@@ -198,7 +198,67 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    uvTransform: {x: 4, y: 186}
+    uvTransform: {x: 161, y: 104}
+  - name: test_walk_Frame_4
+    originalName: 
+    pivot: {x: 0.47826084, y: -0.0057471264}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 161
+      y: 286
+      width: 92
+      height: 174
+    spriteID: 1f9d54dee77d5e941aa39e1b8e466d4b
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 161, y: 286}
+  - name: test_walk_Frame_5
+    originalName: 
+    pivot: {x: 0.44966438, y: -0.0070422534}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 4
+      width: 149
+      height: 142
+    spriteID: c69d21fcae5023e41a7485b852ce8031
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 4}
+  - name: test_walk_Frame_6
+    originalName: 
+    pivot: {x: 0.48, y: 0}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 161
+      y: 4
+      width: 175
+      height: 92
+    spriteID: 8a28c3ef1cc8783419a856cd6c4cba22
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 161, y: 4}
   spriteSheetImportData: []
   asepriteLayers:
   - layerIndex: 0
@@ -211,7 +271,7 @@ ScriptedImporter:
     - name: test_walk_Frame_0
       frameIndex: 0
       cellRect:
-        x: 20
+        x: 52
         y: 1
         width: 92
         height: 174
@@ -219,7 +279,7 @@ ScriptedImporter:
     - name: test_walk_Frame_1
       frameIndex: 1
       cellRect:
-        x: 26
+        x: 58
         y: 0
         width: 81
         height: 168
@@ -227,7 +287,7 @@ ScriptedImporter:
     - name: test_walk_Frame_2
       frameIndex: 2
       cellRect:
-        x: 26
+        x: 58
         y: 0
         width: 74
         height: 169
@@ -235,11 +295,35 @@ ScriptedImporter:
     - name: test_walk_Frame_3
       frameIndex: 3
       cellRect:
-        x: 20
+        x: 52
         y: 1
         width: 92
         height: 174
       spriteId: 960c39ec391fc814881196dd088d5aaa
+    - name: test_walk_Frame_4
+      frameIndex: 4
+      cellRect:
+        x: 52
+        y: 1
+        width: 92
+        height: 174
+      spriteId: 1f9d54dee77d5e941aa39e1b8e466d4b
+    - name: test_walk_Frame_5
+      frameIndex: 5
+      cellRect:
+        x: 29
+        y: 1
+        width: 149
+        height: 142
+      spriteId: c69d21fcae5023e41a7485b852ce8031
+    - name: test_walk_Frame_6
+      frameIndex: 6
+      cellRect:
+        x: 12
+        y: 0
+        width: 175
+        height: 92
+      spriteId: 8a28c3ef1cc8783419a856cd6c4cba22
     linkedCells: []
     parentIndex: -1
   platformSettings:
@@ -293,4 +377,4 @@ ScriptedImporter:
     androidETC2FallbackOverride: 0
   secondarySpriteTextures: []
   spritePackingTag: 
-  canvasSize: {x: 128, y: 256}
+  canvasSize: {x: 192, y: 256}
