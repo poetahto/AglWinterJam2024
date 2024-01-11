@@ -1,16 +1,4 @@
-﻿using System;
-using pt_player_3d.Scripts.Interaction;
-
-public enum BucketState
-{
-    AtBottom,
-    AtTop,
-}
-
-public class BridgeControls : Interactable
-{
-    
-}
+﻿using pt_player_3d.Scripts.Interaction;
 
 public class Bed : Interactable
 {

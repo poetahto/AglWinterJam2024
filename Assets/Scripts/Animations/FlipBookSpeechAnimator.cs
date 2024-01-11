@@ -1,4 +1,6 @@
-﻿using FMOD.Studio;
+﻿using System.Threading;
+using Cysharp.Threading.Tasks;
+using FMOD.Studio;
 using FMODUnity;
 using UnityEngine;
 using STOP_MODE = FMOD.Studio.STOP_MODE;
@@ -14,19 +16,25 @@ namespace Ltg8
         private int _animIndex;
         private bool _wasPlaying;
 
-        public void PlaySpeech(EventReference reference)
+        public async UniTask PlaySpeech(EventReference reference, CancellationToken token = default)
         {
             if (_currentInstance.isValid())
                 _currentInstance.stop(STOP_MODE.IMMEDIATE);
             
             _currentInstance = RuntimeManager.CreateInstance(reference);
             _currentInstance.start();
-        }
 
-        public void StopSpeech()
-        {
-            if (_currentInstance.isValid())
-                _currentInstance.stop(STOP_MODE.IMMEDIATE);
+            while (!token.IsCancellationRequested)
+            {
+                _currentInstance.getPlaybackState(out PLAYBACK_STATE state);
+                
+                if (state == PLAYBACK_STATE.STOPPED)
+                    break;
+
+                await UniTask.Yield();
+            }
+
+            _currentInstance.stop(STOP_MODE.IMMEDIATE);
         }
 
         private void Update()

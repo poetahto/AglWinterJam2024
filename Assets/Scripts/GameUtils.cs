@@ -1,20 +1,7 @@
-﻿using System;
-using Cysharp.Threading.Tasks;
-using Ltg8;
+﻿using Cysharp.Threading.Tasks;
 
 public static class GameUtil
 {
-    public static OverworldNpcView FindNpcPrefab(NpcType type)
-    {
-        foreach (OverworldNpcView npcView in Game.Settings.npcPrefabs)
-        {
-            if (npcView.type == type)
-                return npcView;
-        }
-
-        throw new Exception($"No prefab defined for npc {type}");
-    }
-    
     public static async UniTask Save()
     {
         await Game.Serializer.WriteToDisk("persistent_save", Game.PersistentSave);

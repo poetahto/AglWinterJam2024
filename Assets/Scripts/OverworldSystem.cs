@@ -4,23 +4,14 @@ using DefaultNamespace;
 using pt_player_3d.Scripts.Rotation;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 
 namespace Ltg8
 {
-    public class OverworldNpcView : MonoBehaviour
-    {
-        public NpcType type;
-    }
-
-    public enum NpcType
-    {
-        Farmer,
-    }
-    
     public class OverworldSystem : MonoBehaviour
     {
-        private OverworldEventFactory _eventFactory;
-
+        public OverworldEventFactory EventFactory { get; private set; }
+        public DecisionSystem Decisions { get; private set; }
         public ItemSystem Items { get; private set; }
         public DayNightSystem DayNight { get; private set; }
         public bool ReadyForNextDay { get; set; }
@@ -32,8 +23,9 @@ namespace Ltg8
             SceneManager.SetActiveScene(SceneManager.GetSceneByName(Game.Save.PlayerScene));
             await UniTask.Yield();
             Items = FindAnyObjectByType<ItemSystem>();
-            DayNight = FindObjectOfType<DayNightSystem>();
-            _eventFactory = FindAnyObjectByType<OverworldEventFactory>();
+            DayNight = FindAnyObjectByType<DayNightSystem>();
+            Decisions = FindAnyObjectByType<DecisionSystem>();
+            EventFactory = FindAnyObjectByType<OverworldEventFactory>();
             
             PlayerSaveTracker playerSaveTracker = FindAnyObjectByType<PlayerSaveTracker>();
             GameObject player;
@@ -61,7 +53,7 @@ namespace Ltg8
                 ReadyForNextDay = false;
                 while (Game.Save.TimeOfDay != TimeOfDay.Night && !token.IsCancellationRequested)
                 {
-                    OverworldEvent e = _eventFactory.SpawnEvent();
+                    OverworldEvent e = EventFactory.SpawnEvent();
                     await UniTask.WaitUntil(() => e.IsDone, cancellationToken: token);
                     await GameUtil.Save();
                 }

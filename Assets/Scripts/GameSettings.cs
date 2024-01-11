@@ -7,7 +7,6 @@ using UnityEngine;
 public class GameSettings : ScriptableObject
 {
     public List<OverworldItemView> itemPrefabs;
-    public List<OverworldNpcView> npcPrefabs;
     public List<string> overworldSceneNames;
     public GameObject playerPrefab;
 }
