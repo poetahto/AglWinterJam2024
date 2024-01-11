@@ -40,7 +40,7 @@ namespace pt_player_3d.Scripts.Interaction
         {
             // update target
             Ray ray = new Ray(viewDirection.transform.position, viewDirection.forward);
-            int hits = Physics.RaycastNonAlloc(ray, _hitBuffer, float.PositiveInfinity, Physics.DefaultRaycastLayers);
+            int hits = Physics.RaycastNonAlloc(ray, _hitBuffer, float.PositiveInfinity, ~LayerMask.GetMask("Ignore Raycast", "Clip"));
             Assert.IsTrue(hits <= BufferSize);
             Array.Sort(_hitBuffer, 0, hits, _hitDistanceComparer);
             Interactable newTarget = _currentInteractionTarget;
