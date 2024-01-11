@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using DefaultNamespace;
 using pt_player_3d.Scripts.Interaction;
 using UnityEngine;
 using UnityEngine.Splines;
@@ -17,6 +18,7 @@ public class BucketControls : Interactable
     [SerializeField] private float bottomValue;
     [SerializeField] private float topValue;
 
+    public event Action<BucketState> OnBucketStateChange;
     private CancellationTokenSource _cts;
     
     private void Start()
@@ -54,5 +56,7 @@ public class BucketControls : Interactable
             splineAnimator.NormalizedTime = Mathf.Lerp(start, end, t);
             await UniTask.Yield();
         }
+        
+        OnBucketStateChange?.Invoke(targetState);
     }
 }

@@ -6,7 +6,9 @@ using UnityEngine;
 public class BucketItemHolder : MonoBehaviour
 {
     private readonly HashSet<OverworldItemView> _heldItems = new HashSet<OverworldItemView>();
-    private Vector3 _prevPos; 
+    private Vector3 _prevPos;
+
+    public IReadOnlyCollection<OverworldItemView> Items => _heldItems;
 
     private void Update()
     {
