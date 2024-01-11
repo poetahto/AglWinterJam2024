@@ -1,15 +1,19 @@
 ﻿using System.Threading;
 using Cysharp.Threading.Tasks;
 using DefaultNamespace;
+using Ltg8.Dialogue;
 using pt_player_3d.Scripts.Rotation;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.Serialization;
 
 namespace Ltg8
 {
     public class OverworldSystem : MonoBehaviour
     {
+        public BucketControls BucketControls { get; private set; }
+        public BucketItemHolder BucketItemHolder { get; private set; }
+        public PlayerDialogueSystem PlayerDialogue { get; private set; }
+        public NpcDialogueSystem NpcDialogue { get; private set; }
         public OverworldEventFactory EventFactory { get; private set; }
         public DecisionSystem Decisions { get; private set; }
         public ItemSystem Items { get; private set; }
@@ -28,6 +32,10 @@ namespace Ltg8
             Decisions = FindAnyObjectByType<DecisionSystem>();
             EventFactory = FindAnyObjectByType<OverworldEventFactory>();
             Player = FindAnyObjectByType<OverworldPlayerView>();
+            NpcDialogue = FindAnyObjectByType<NpcDialogueSystem>();
+            PlayerDialogue = FindAnyObjectByType<PlayerDialogueSystem>();
+            BucketItemHolder = FindAnyObjectByType<BucketItemHolder>();
+            BucketControls = FindAnyObjectByType<BucketControls>();
             
             if (Player == null)
             {
@@ -55,6 +63,7 @@ namespace Ltg8
                     OverworldEvent e = EventFactory.SpawnEvent();
                     await UniTask.WaitUntil(() => e.IsDone, cancellationToken: token);
                     await GameUtil.Save();
+                    Destroy(e.gameObject);
                 }
                 await UniTask.WaitUntil(() => ReadyForNextDay, cancellationToken: token);
                 DayNight.ResetTime();

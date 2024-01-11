@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using DefaultNamespace;
+using UnityEngine.Serialization;
 
 namespace Ltg8
 {
@@ -10,7 +11,8 @@ namespace Ltg8
         public BridgeControls bridgeControls;
         public BucketControls bucketControls;
         public BucketItemHolder bucketItemHolder;
-        public DialogueSystem dialogueSystem;
+        [FormerlySerializedAs("dialogueSystem")]
+        public PlayerDialogueSystem playerDialogueSystem;
         
         private readonly Dictionary<string, Func<UniTaskVoid>> _activeChoices = new Dictionary<string, Func<UniTaskVoid>>();
         private readonly Dictionary<ItemType, string> _bucketChoiceIds = new Dictionary<ItemType, string>();
@@ -22,7 +24,7 @@ namespace Ltg8
             base.Start();
             bucketControls.OnBucketStateChange += HandleBucketStateChange;
             bridgeControls.OnBridgeOpenStart += HandleBridgeOpenStart;
-            dialogueSystem.OnOptionSelected += HandleDialogueOptionSelected;
+            playerDialogueSystem.OnOptionSelected += HandlePlayerDialogueOptionSelected;
         }
 
         public void ChoiceLowerBridge(string id, Func<UniTaskVoid> callback)
@@ -35,7 +37,7 @@ namespace Ltg8
         public void ChoiceDialogueOption(string id, Func<UniTaskVoid> callback, string text)
         {
             _activeChoices.Add(id, callback);
-            dialogueSystem.AddOption(id, text);
+            playerDialogueSystem.AddOption(id, text);
         }
 
         public void ChoiceGiveBucketItem(string id, Func<UniTaskVoid> callback, ItemType item)
@@ -57,10 +59,11 @@ namespace Ltg8
 
         public void RemoveAllChoices()
         {
+            bridgeControls.IsLocked = true;
             _activeChoices.Clear();
             _bucketChoiceIds.Clear();
             _bridgeChoiceId = null;
-            dialogueSystem.RemoveAllOptions();
+            playerDialogueSystem.RemoveAllOptions();
         }
 
         private void HandleChoiceSelected(string choiceId)
@@ -84,7 +87,7 @@ namespace Ltg8
             FinishDecision();
         }
 
-        private void HandleDialogueOptionSelected(string optionId)
+        private void HandlePlayerDialogueOptionSelected(string optionId)
         {
             HandleChoiceSelected(optionId);
             FinishDecision();
