@@ -7,7 +7,6 @@ public class OverworldSaveData
     public const int InvalidId = -1;
 
     public int DailyDeception;
-    public int DailySuccesses;
     public int Karma;
     public bool HasHeldItemTarget;
     public Vector3 HeldItemTarget;

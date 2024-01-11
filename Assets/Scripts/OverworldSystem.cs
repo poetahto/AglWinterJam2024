@@ -1,8 +1,10 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using Cysharp.Threading.Tasks;
 using DefaultNamespace;
 using Ltg8.Dialogue;
 using pt_player_3d.Scripts.Rotation;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -11,6 +13,8 @@ namespace Ltg8
 
     public class OverworldSystem : MonoBehaviour
     {
+        [SerializeField] private TMP_Text deceptionText;
+        
         public PathingSystem Pathing { get; private set; }
         public BucketControls BucketControls { get; private set; }
         public BucketItemHolder BucketItemHolder { get; private set; }
@@ -60,6 +64,7 @@ namespace Ltg8
         {
             while (!token.IsCancellationRequested)
             {
+                Game.Save.DailyDeception = 0;
                 ReadyForNextDay = false;
                 while (Game.Save.TimeOfDay != TimeOfDay.Night && !token.IsCancellationRequested)
                 {
@@ -70,6 +75,11 @@ namespace Ltg8
                 }
                 await UniTask.WaitUntil(() => ReadyForNextDay, cancellationToken: token);
                 DayNight.ResetTime();
+                
+                deceptionText.gameObject.SetActive(true);
+                deceptionText.SetText($"You were deceived {Game.Save.DailyDeception} times today.");
+                await UniTask.Delay(TimeSpan.FromSeconds(10), cancellationToken: token);
+                deceptionText.gameObject.SetActive(false);
             }
         }
     }

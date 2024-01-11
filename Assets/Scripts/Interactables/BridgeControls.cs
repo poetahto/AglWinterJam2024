@@ -32,23 +32,14 @@ public class BridgeControls : Interactable
             return;
 
         IsLocked = true;
-        OnBridgeOpenStart?.Invoke();
-        PlayBridgeAnimation(openAngle)
-            .ContinueWith(() => OnBridgeOpenEnd?.Invoke())
-            .Forget();
+        PlayBridgeAnimation().Forget();
     }
 
-    public void CloseBridge()
-    {
-        PlayBridgeAnimation(closedAngle)
-            .Forget();
-    }
-
-    private async UniTask PlayBridgeAnimation(float targetAngle)
+    private async UniTask MoveBridgeTo(float angle)
     {
         float elapsed = 0;
         Quaternion start = bridgeObject.transform.rotation;
-        Quaternion end = Quaternion.Euler(targetAngle, 0, 0);
+        Quaternion end = Quaternion.Euler(angle, 0, 0);
 
         while (elapsed < duration)
         {
@@ -57,5 +48,14 @@ public class BridgeControls : Interactable
             bridgeObject.transform.rotation = Quaternion.Lerp(start, end, t);
             await UniTask.Yield();
         }
+    }
+    
+    private async UniTask PlayBridgeAnimation()
+    {
+        OnBridgeOpenStart?.Invoke();
+        await MoveBridgeTo(openAngle);
+        OnBridgeOpenEnd?.Invoke();
+        await UniTask.Delay(TimeSpan.FromSeconds(5));
+        await MoveBridgeTo(closedAngle);
     }
 }

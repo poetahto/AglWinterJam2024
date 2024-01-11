@@ -46,7 +46,7 @@ namespace a
             await NpcMoveAll(PathType.EntranceToCity);
             FinishEvent();
             Game.Save.Karma += _isFaking ? -1 : 1;
-            Game.Save.DailyDeception += _isFaking ? -1 : 1;
+            if (_isFaking) Game.Save.DailyDeception++;
         }
         private async UniTaskVoid HandleReject()
         {
@@ -54,7 +54,6 @@ namespace a
             await NpcMoveAll(PathType.EntranceToHills);
             FinishEvent();
             Game.Save.Karma += _isFaking ? 1 : -1;
-            Game.Save.DailyDeception += _isFaking ? 1 : -1;
         }
     }
 }
