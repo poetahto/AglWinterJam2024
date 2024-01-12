@@ -1,10 +1,23 @@
 ﻿using System.Collections.Generic;
+using poetools.Console;
 using UnityEngine;
 using Random = UnityEngine.Random;
 namespace Ltg8
 {
     public class OverworldEventFactory : MonoBehaviour
     {
+        [ConsoleCommand("faster")]
+        public static void Faster()
+        {
+            Time.timeScale *= 2;
+        }
+        
+        [ConsoleCommand("slower")]
+        public static void Slower()
+        {
+            Time.timeScale /= 2;
+        }
+        
         public OverworldEventGroup eventGroup;
 
         private List<OverworldEvent> _eventPool = new List<OverworldEvent>();
@@ -27,11 +40,11 @@ namespace Ltg8
 
         public OverworldEvent SpawnEvent()
         {
-            OverworldEvent randomEventPrefab = eventGroup.prefabs[_index];
+            OverworldEvent randomEventPrefab = _eventPool[_index];
             OverworldEvent instance = Instantiate(randomEventPrefab);
             _index++;
             
-            if (_index > _eventPool.Count)
+            if (_index > _eventPool.Count - 1)
             {
                 _index = 0;
                 Shuffle();

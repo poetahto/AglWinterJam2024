@@ -60,10 +60,10 @@ namespace Ltg8
         {
             if (_isThief)
             {
-                NpcSay("You've been more of a help than you'll ever know.");
+                NpcSay("You've been more of a help than you'll ever know.", autoClearSeconds:3);
             } else
             {
-                NpcSay("Thank you mate!");
+                NpcSay("Thank you mate!", autoClearSeconds:3);
             }
             FinishEvent();
             Game.Save.Karma += _isThief ? -2 : 2;
@@ -74,11 +74,11 @@ namespace Ltg8
         {
             if (_isThief)
             {
-                NpcSay("This is a bloody outrage mate.");
+                NpcSay("This is a bloody outrage mate.", autoClearSeconds: 3);
             }
             else
             {
-                NpcSay("What? High command will know about this.");
+                NpcSay("What? High command will know about this.", autoClearSeconds: 3);
             }
             FinishEvent();
             await NpcMove(PathType.EntranceToHills);

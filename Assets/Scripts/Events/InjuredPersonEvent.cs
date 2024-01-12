@@ -11,7 +11,7 @@ namespace a
         {
             _isFaking = Random.value > 0.5f;
 
-            NpcSay(_isFaking ? "Please sir this hurts!" : "AHHH THE PAIN!!!", 0);
+            NpcSay(_isFaking ? "Please sir this hurts!" : "AHHH THE PAIN!!!", 0, autoClearSeconds:15);
             await NpcMoveAll(PathType.HillsToEntrance);
             NpcSay("Please help my friend, he " + (_isFaking ? "got hurt!" : "is gravely injured!"), 1);
             Decisions.ChoiceLowerBridge("a", HandleLowerBridge);
@@ -35,7 +35,7 @@ namespace a
             NpcSay("It was a hunting accident, I shot him by accident", 1);
             
             if (_isFaking)
-                NpcSay("I need to see the doctor, officer.", 0);
+                NpcSay("I need to see the doctor, officer.", 0, autoClearSeconds: 3);
             
             Decisions.ChoiceDialogueOption("a", HandleReject, "Sorry, I don't believe you.");
             Decisions.ChoiceLowerBridge("b", HandleLowerBridge);
@@ -51,7 +51,7 @@ namespace a
         private async UniTaskVoid HandleReject()
         {
             FinishEvent();
-            NpcSay(!_isFaking ? "How dare you doom him to death!" : "Rats.", 1);
+            NpcSay(!_isFaking ? "How dare you doom him to death!" : "Rats.", 1, autoClearSeconds: 3);
             await NpcMoveAll(PathType.EntranceToHills);
             Game.Save.Karma += _isFaking ? 1 : -1;
         }

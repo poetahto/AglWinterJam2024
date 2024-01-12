@@ -22,10 +22,6 @@ namespace Ltg8
                 result[i] = result[i].Transform(path.transform.localToWorldMatrix);
             result.Insert(0, new BezierKnot(start));
             result.Add(new BezierKnot(end));
-            var test = new GameObject("visualizer");
-            var sc = test.AddComponent<SplineContainer>();
-            sc.Spline = result;
-            
             return result;
         }
 

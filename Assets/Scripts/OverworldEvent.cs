@@ -72,9 +72,11 @@ namespace Ltg8
 
         protected void FinishEvent()
         {
-            foreach (GameObject npc in npcs)
-                Game.Overworld.NpcDialogue.ClearText(npc);
-            
+            UniTask.Delay(TimeSpan.FromSeconds(20), cancellationToken: gameObject.GetCancellationTokenOnDestroy())
+                .ContinueWith(() => {
+                    foreach (GameObject npc in npcs)
+                        Game.Overworld.NpcDialogue.ClearText(npc);
+                });
             IsDone = true;
         }
     }

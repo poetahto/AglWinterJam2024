@@ -40,7 +40,7 @@ namespace Ltg8
         private async UniTaskVoid HandleAskForSoul()
         {
             FinishEvent();
-            NpcSay("Yeah... I'm good.", 0);
+            NpcSay("Yeah... I'm good.", 0, autoClearSeconds:3);
             await NpcMove(PathType.EntranceToHills, 0);
         }
         private async UniTaskVoid HandleAskForDuck()
@@ -58,7 +58,7 @@ namespace Ltg8
         private async UniTaskVoid HandleTrolling()
         {
             FinishEvent();
-            NpcSay("MAN YOU SUCK!!!", 0);
+            NpcSay("MAN YOU SUCK!!!", 0, autoClearSeconds:3 );
             await NpcMove(PathType.EntranceToHills, 0);
         }
         private async UniTaskVoid HandleAskForReason()
